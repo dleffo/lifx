@@ -8,18 +8,13 @@ kelvin = ARGV[2]
 
 client = discovery()	#Discovers bulbs and returns lightcollection object
 
-if client.lights.with_label(name)
-	light = client.lights.with_label(name)
-end
-if client.lights.with_tag(name)
-	light = client.lights.with_tag(name)
-end	
-
+lights = client.lights.with_tag(name)
 print("brightness = #{brightness} kelvin = #{kelvin}\n")
 
-light.turn_on
-light.set_color(LIFX::Color.hsbk(0, 0, brightness, kelvin), duration: 5)
-sleep 1
+client.sync do
+	lights.turn_on
+end
+lights.set_color(LIFX::Color.hsbk(0, 0, brightness, kelvin), duration: 5)
 print("Colour has changed\n")
 
 print("------------------------------------------------------\n")
